@@ -79,13 +79,13 @@
       width:100%;
       max-width:540px;
       height:340px;
-      perspective:1400px;
       cursor:pointer;
       border-radius:2rem;
       padding:3px;
       background:linear-gradient(135deg, #ffe6a3, #fbbf24);
       box-shadow:var(--shadow);
       transition:transform 0.18s ease, box-shadow 0.18s ease;
+      overflow:hidden;
     }
 
     .card:hover{
@@ -99,28 +99,47 @@
       height:100%;
       border-radius:1.9rem;
       background:radial-gradient(circle at top, var(--card-top), var(--card));
-      transition:transform 0.6s;
-      transform-style:preserve-3d;
       overflow:hidden;
-    }
-
-    .card-inner.flipped{
-      transform:rotateY(180deg);
+      padding:1.8rem 2rem;
     }
 
     .card-face{
       position:absolute;
       inset:0;
-      border-radius:1.9rem;
       padding:1.8rem 2rem;
-      backface-visibility:hidden;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      transition:opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .card-front::before,
-    .card-back::before{
+    .card-front{
+      opacity:1;
+      transform:translateX(0);
+      z-index:2;
+    }
+
+    .card-back{
+      opacity:0;
+      transform:translateX(12px);
+      z-index:1;
+    }
+
+    .card.show-answer .card-front{
+      opacity:0;
+      transform:translateX(-12px);
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .card.show-answer .card-back{
+      opacity:1;
+      transform:translateX(0);
+      z-index:2;
+      pointer-events:auto;
+    }
+
+    .card-face::before{
       content:"";
       position:absolute;
       width:120px;
@@ -134,8 +153,7 @@
       pointer-events:none;
     }
 
-    .card-front::after,
-    .card-back::after{
+    .card-face::after{
       content:"";
       position:absolute;
       width:80px;
@@ -149,12 +167,13 @@
       pointer-events:none;
     }
 
-    .card-front{
-      /* front side */
-    }
-
-    .card-back{
-      transform:rotateY(180deg);
+    .card-content{
+      position:relative;
+      z-index:3;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
     .badge{
@@ -170,7 +189,7 @@
       border-radius:999px;
       padding:0.25rem 0.85rem 0.25rem 0.4rem;
       box-shadow:0 6px 14px rgba(245, 158, 11, 0.35);
-      z-index:1;
+      z-index:4;
     }
 
     .badge-dot{
@@ -331,6 +350,9 @@
       .card{
         height:320px;
       }
+      .card-inner{
+        padding:1.4rem 1.35rem;
+      }
       .card-face{
         padding:1.4rem 1.35rem;
       }
@@ -349,49 +371,53 @@
     <div class="heading">U.S. Presidents in Order</div>
     <p class="subtitle">
       Front: <strong>“Who was the ___ president?”</strong> &mdash; Back: name, party, years, and what they’re known for.  
-      Tap / click the big card to flip it like a cartoon flashcard 💭
+      Tap / click the big card to switch between question and answer 💭
     </p>
 
     <div class="card-wrapper">
       <div class="card" id="card">
-        <div class="card-inner" id="card-inner">
+        <div class="card-inner">
           <!-- Front -->
           <div class="card-face card-front">
-            <div>
-              <div class="badge">
-                <span class="badge-dot"></span>
-                Question
+            <div class="card-content">
+              <div>
+                <div class="badge">
+                  <span class="badge-dot"></span>
+                  Question
+                </div>
+                <p class="question-text" id="question-text">
+                  <!-- filled by JS -->
+                </p>
+                <p class="flip-hint">
+                  Tap to reveal the answer!
+                </p>
               </div>
-              <p class="question-text" id="question-text">
-                <!-- filled by JS -->
-              </p>
-              <p class="flip-hint">
-                Tap to reveal the answer!
-              </p>
-            </div>
-            <div>
-              <p class="ordinal" id="ordinal-label"></p>
+              <div>
+                <p class="ordinal" id="ordinal-label"></p>
+              </div>
             </div>
           </div>
 
           <!-- Back -->
           <div class="card-face card-back">
-            <div>
-              <div class="badge">
-                <span class="badge-dot"></span>
-                Answer
-              </div>
-
-              <div class="back-top">
-                <div>
-                  <p class="president-main" id="president-name"></p>
-                  <p class="term" id="president-term"></p>
+            <div class="card-content">
+              <div>
+                <div class="badge">
+                  <span class="badge-dot"></span>
+                  Answer
                 </div>
-                <div class="party-pill" id="president-party"></div>
-              </div>
 
-              <p class="known-for" id="president-known"></p>
-              <p class="foot-note">Tap again to flip back to the question 🔁</p>
+                <div class="back-top">
+                  <div>
+                    <p class="president-main" id="president-name"></p>
+                    <p class="term" id="president-term"></p>
+                  </div>
+                  <div class="party-pill" id="president-party"></div>
+                </div>
+
+                <p class="known-for" id="president-known"></p>
+                <p class="foot-note">Tap again to go back to the question 🔁</p>
+              </div>
             </div>
           </div>
         </div>
@@ -476,7 +502,6 @@
     }
 
     const card = document.getElementById("card");
-    const cardInner = document.getElementById("card-inner");
     const qText = document.getElementById("question-text");
     const ordinalLabel = document.getElementById("ordinal-label");
     const nameEl = document.getElementById("president-name");
@@ -490,6 +515,7 @@
     const shuffleBtn = document.getElementById("shuffle-btn");
 
     let index = 0;
+    let showingAnswer = false;
 
     function renderCard(){
       const p = presidents[index];
@@ -500,7 +526,10 @@
       termEl.textContent = "Years in office: " + p.term;
       knownEl.textContent = p.knownFor;
       counterEl.textContent = "President " + p.number + " / " + presidents.length;
-      cardInner.classList.remove("flipped"); // reset to question side
+
+      // always reset to question side when you move to another card
+      showingAnswer = false;
+      card.classList.remove("show-answer");
     }
 
     function showNext(){
@@ -523,7 +552,12 @@
     }
 
     card.addEventListener("click", () => {
-      cardInner.classList.toggle("flipped");
+      showingAnswer = !showingAnswer;
+      if(showingAnswer){
+        card.classList.add("show-answer");
+      }else{
+        card.classList.remove("show-answer");
+      }
     });
 
     nextBtn.addEventListener("click", e => {
