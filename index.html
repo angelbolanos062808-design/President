@@ -1,26 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>US Presidents Flashcard Quiz</title>
+  <title>Statistics Notes Flashcard Quiz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <!-- Bubbly cartoon-ish font -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#fdf7e3;          /* soft cream */
-      --bg-soft:#f9e8b9;     /* pale yellow */
-      --card:#fff7c2;        /* light card yellow */
-      --card-top:#ffe9a3;    /* slightly darker top gradient */
-      --accent:#f59e0b;      /* warm golden orange */
-      --accent-soft:#fbbf24; /* soft gold */
-      --accent-dark:#8b5a2b; /* brown */
-      --text:#5b3b21;        /* brown text */
-      --muted:#b28c5a;       /* lighter brown */
+      --bg:#fdf7e3;
+      --bg-soft:#f9e8b9;
+      --card:#fff7c2;
+      --card-top:#ffe9a3;
+      --accent:#f59e0b;
+      --accent-soft:#fbbf24;
+      --accent-dark:#8b5a2b;
+      --text:#5b3b21;
+      --muted:#b28c5a;
       --shadow:0 20px 40px rgba(177, 128, 40, 0.35);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
     body{
       font-family:"Baloo 2", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -235,13 +241,13 @@
       margin-top:0.4rem;
     }
 
-    .president-main{
+    .term-main{
       font-size:1.45rem;
       font-weight:800;
       color:var(--accent-dark);
     }
 
-    .party-pill{
+    .category-pill{
       font-size:0.8rem;
       padding:0.3rem 0.85rem;
       border-radius:999px;
@@ -251,16 +257,17 @@
       white-space:nowrap;
     }
 
-    .known-for{
+    .definition{
       margin-top:1rem;
       font-size:1.02rem;
       line-height:1.6;
     }
 
-    .term{
-      font-size:0.9rem;
-      color:var(--muted);
-      margin-top:0.2rem;
+    .example{
+      margin-top:0.8rem;
+      font-size:0.95rem;
+      line-height:1.5;
+      color:var(--accent-dark);
     }
 
     .foot-note{
@@ -300,7 +307,9 @@
       color:var(--accent-dark);
       border:2px solid #f5d08a;
       box-shadow:0 6px 0 #f0b754;
-      transition:transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, translate 0.12s ease;
+      transition:transform 0.12s ease,
+                  box-shadow 0.12s ease,
+                  background 0.12s ease;
     }
 
     button.primary{
@@ -317,13 +326,6 @@
     button:active{
       transform:translateY(3px);
       box-shadow:0 3px 0 rgba(0,0,0,0.15);
-    }
-
-    button[disabled]{
-      opacity:0.6;
-      cursor:not-allowed;
-      box-shadow:none;
-      transform:none;
     }
 
     .counter{
@@ -346,237 +348,581 @@
     }
 
     @media (max-width:640px){
-      .heading{font-size:1.7rem;}
-      .card{
-        height:320px;
+
+      .heading{
+        font-size:1.7rem;
       }
+
+      .card{
+        height:350px;
+      }
+
       .card-inner{
         padding:1.4rem 1.35rem;
       }
+
       .card-face{
         padding:1.4rem 1.35rem;
       }
+
       .question-text{
         font-size:1.35rem;
       }
-      .known-for{
+
+      .definition{
         font-size:0.95rem;
+      }
+
+      .example{
+        font-size:0.9rem;
       }
     }
   </style>
 </head>
+
 <body>
+
   <div class="app">
-    <div class="title">Flashcard Quiz</div>
-    <div class="heading">U.S. Presidents in Order</div>
+
+    <div class="title">Statistics Flashcards</div>
+
+    <div class="heading">
+      Statistics Notes Quiz
+    </div>
+
     <p class="subtitle">
-      Front: <strong>“Who was the ___ president?”</strong> &mdash; Back: name, party, years, and what they’re known for.  
-      Tap / click the big card to switch between question and answer 💭
+      Front: <strong>Question</strong> &mdash;
+      Back: definition and example.
+      Tap / click the big card to reveal the answer 💭
     </p>
 
     <div class="card-wrapper">
+
       <div class="card" id="card">
+
         <div class="card-inner">
-          <!-- Front -->
+
+          <!-- FRONT -->
           <div class="card-face card-front">
+
             <div class="card-content">
+
               <div>
+
                 <div class="badge">
                   <span class="badge-dot"></span>
                   Question
                 </div>
-                <p class="question-text" id="question-text">
-                  <!-- filled by JS -->
-                </p>
+
+                <p class="question-text" id="question-text"></p>
+
                 <p class="flip-hint">
                   Tap to reveal the answer!
                 </p>
+
               </div>
+
               <div>
                 <p class="ordinal" id="ordinal-label"></p>
               </div>
+
             </div>
+
           </div>
 
-          <!-- Back -->
+
+          <!-- BACK -->
           <div class="card-face card-back">
+
             <div class="card-content">
+
               <div>
+
                 <div class="badge">
                   <span class="badge-dot"></span>
                   Answer
                 </div>
 
                 <div class="back-top">
+
                   <div>
-                    <p class="president-main" id="president-name"></p>
-                    <p class="term" id="president-term"></p>
+                    <p class="term-main" id="term-name"></p>
                   </div>
-                  <div class="party-pill" id="president-party"></div>
+
+                  <div class="category-pill" id="term-category"></div>
+
                 </div>
 
-                <p class="known-for" id="president-known"></p>
-                <p class="foot-note">Tap again to go back to the question 🔁</p>
+                <p class="definition" id="term-definition"></p>
+
+                <p class="example" id="term-example"></p>
+
+                <p class="foot-note">
+                  Tap again to go back to the question 🔁
+                </p>
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
 
+
+    <!-- CONTROLS -->
     <div class="controls">
+
       <div class="left-buttons">
+
         <button id="prev-btn">
           ⬅ Previous
         </button>
+
         <button id="next-btn" class="primary">
           Next ➜
         </button>
+
       </div>
+
       <div class="right-buttons">
+
         <span class="counter" id="counter"></span>
+
         <button id="shuffle-btn">
           🔀 Shuffle
         </button>
-        <span class="mode-label">Mode: <span>Ordered (1–47)</span></span>
+
+        <span class="mode-label">
+          Mode: <span>Statistics</span>
+        </span>
+
       </div>
+
     </div>
+
   </div>
 
+
   <script>
-    // Data for all US presidents, in official order
-    const presidents = [
-      { number: 1, name: "George Washington", party: "No Party (Unaffiliated)", term: "1789–1797", knownFor: "First president; Revolutionary War commander; set many traditions for the office." },
-      { number: 2, name: "John Adams", party: "Federalist", term: "1797–1801", knownFor: "Early leader in independence; helped draft the Declaration of Independence." },
-      { number: 3, name: "Thomas Jefferson", party: "Democratic-Republican", term: "1801–1809", knownFor: "Primary author of the Declaration of Independence; completed the Louisiana Purchase." },
-      { number: 4, name: "James Madison", party: "Democratic-Republican", term: "1809–1817", knownFor: "Key author of the Constitution; led the U.S. through the War of 1812." },
-      { number: 5, name: "James Monroe", party: "Democratic-Republican", term: "1817–1825", knownFor: "Issued the Monroe Doctrine warning Europe not to interfere in the Americas." },
-      { number: 6, name: "John Quincy Adams", party: "Democratic-Republican", term: "1825–1829", knownFor: "Son of John Adams; later served in Congress fighting slavery." },
-      { number: 7, name: "Andrew Jackson", party: "Democratic", term: "1829–1837", knownFor: "Expanded presidential power; pushed Indian Removal, including the Trail of Tears." },
-      { number: 8, name: "Martin Van Buren", party: "Democratic", term: "1837–1841", knownFor: "Presidency overshadowed by the Panic of 1837 and economic troubles." },
-      { number: 9, name: "William Henry Harrison", party: "Whig", term: "1841", knownFor: "Served the shortest term; died about a month after taking office." },
-      { number: 10, name: "John Tyler", party: "Whig (later Unaffiliated)", term: "1841–1845", knownFor: "First vice president to become president after a death; oversaw annexation of Texas." },
-      { number: 11, name: "James K. Polk", party: "Democratic", term: "1845–1849", knownFor: "Oversaw huge territorial expansion during the Mexican–American War." },
-      { number: 12, name: "Zachary Taylor", party: "Whig", term: "1849–1850", knownFor: "Mexican–American War hero; died suddenly in office." },
-      { number: 13, name: "Millard Fillmore", party: "Whig", term: "1850–1853", knownFor: "Signed the Compromise of 1850, including the Fugitive Slave Act." },
-      { number: 14, name: "Franklin Pierce", party: "Democratic", term: "1853–1857", knownFor: "Supported the Kansas–Nebraska Act, which worsened North–South tensions." },
-      { number: 15, name: "James Buchanan", party: "Democratic", term: "1857–1861", knownFor: "Did little to stop Southern states from seceding before the Civil War." },
-      { number: 16, name: "Abraham Lincoln", party: "Republican", term: "1861–1865", knownFor: "Led the Union in the Civil War; issued the Emancipation Proclamation; assassinated." },
-      { number: 17, name: "Andrew Johnson", party: "National Union / Democratic", term: "1865–1869", knownFor: "Clashed with Congress over Reconstruction; first president to be impeached." },
-      { number: 18, name: "Ulysses S. Grant", party: "Republican", term: "1869–1877", knownFor: "Civil War hero; enforced Reconstruction and civil rights, but administration had scandals." },
-      { number: 19, name: "Rutherford B. Hayes", party: "Republican", term: "1877–1881", knownFor: "Ended Reconstruction by withdrawing federal troops from the South." },
-      { number: 20, name: "James A. Garfield", party: "Republican", term: "1881", knownFor: "Assassinated early in his term; supported civil-service reform." },
-      { number: 21, name: "Chester A. Arthur", party: "Republican", term: "1881–1885", knownFor: "Signed the Pendleton Act, starting modern civil-service exams." },
-      { number: 22, name: "Grover Cleveland", party: "Democratic", term: "1885–1889", knownFor: "Opposed political corruption and high tariffs; only president to serve nonconsecutive terms." },
-      { number: 23, name: "Benjamin Harrison", party: "Republican", term: "1889–1893", knownFor: "Signed high tariffs and admitted several western states to the Union." },
-      { number: 24, name: "Grover Cleveland", party: "Democratic", term: "1893–1897", knownFor: "Returned to office during a severe economic depression." },
-      { number: 25, name: "William McKinley", party: "Republican", term: "1897–1901", knownFor: "Led the U.S. in the Spanish–American War; assassinated in 1901." },
-      { number: 26, name: "Theodore Roosevelt", party: "Republican", term: "1901–1909", knownFor: "Progressive reforms, trust-busting, conservation, and building the Panama Canal." },
-      { number: 27, name: "William Howard Taft", party: "Republican", term: "1909–1913", knownFor: "Pursued antitrust cases; later became Chief Justice of the Supreme Court." },
-      { number: 28, name: "Woodrow Wilson", party: "Democratic", term: "1913–1921", knownFor: "Led the U.S. in World War I; pushed for the League of Nations." },
-      { number: 29, name: "Warren G. Harding", party: "Republican", term: "1921–1923", knownFor: "\"Return to normalcy\" after WWI; administration marred by scandals." },
-      { number: 30, name: "Calvin Coolidge", party: "Republican", term: "1923–1929", knownFor: "Promoted limited government and business growth during the Roaring Twenties." },
-      { number: 31, name: "Herbert Hoover", party: "Republican", term: "1929–1933", knownFor: "President when the Great Depression began; criticized for limited response." },
-      { number: 32, name: "Franklin D. Roosevelt", party: "Democratic", term: "1933–1945", knownFor: "New Deal programs and leadership during most of World War II." },
-      { number: 33, name: "Harry S. Truman", party: "Democratic", term: "1945–1953", knownFor: "Ended WWII with atomic bombs; helped rebuild Europe with the Marshall Plan." },
-      { number: 34, name: "Dwight D. Eisenhower", party: "Republican", term: "1953–1961", knownFor: "WWII general; built the Interstate Highway System; presided over Cold War tensions." },
-      { number: 35, name: "John F. Kennedy", party: "Democratic", term: "1961–1963", knownFor: "Handled the Cuban Missile Crisis; inspired space race; assassinated in 1963." },
-      { number: 36, name: "Lyndon B. Johnson", party: "Democratic", term: "1963–1969", knownFor: "Pushed civil rights laws and Great Society programs; escalated the Vietnam War." },
-      { number: 37, name: "Richard Nixon", party: "Republican", term: "1969–1974", knownFor: "Opened relations with China; resigned because of the Watergate scandal." },
-      { number: 38, name: "Gerald Ford", party: "Republican", term: "1974–1977", knownFor: "Became president after Nixon resigned; pardoned Nixon." },
-      { number: 39, name: "Jimmy Carter", party: "Democratic", term: "1977–1981", knownFor: "Brokered the Camp David Accords; faced inflation and the Iran hostage crisis." },
-      { number: 40, name: "Ronald Reagan", party: "Republican", term: "1981–1989", knownFor: "Conservative agenda, tax cuts, and major role in ending the Cold War." },
-      { number: 41, name: "George H. W. Bush", party: "Republican", term: "1989–1993", knownFor: "Led the Gulf War and managed the end of the Cold War." },
-      { number: 42, name: "Bill Clinton", party: "Democratic", term: "1993–2001", knownFor: "Economic expansion and budget surpluses; impeached but acquitted." },
-      { number: 43, name: "George W. Bush", party: "Republican", term: "2001–2009", knownFor: "Responded to 9/11; wars in Afghanistan and Iraq." },
-      { number: 44, name: "Barack Obama", party: "Democratic", term: "2009–2017", knownFor: "Affordable Care Act; first Black president; led recovery from Great Recession." },
-      { number: 45, name: "Donald Trump", party: "Republican", term: "2017–2021", knownFor: "Populist politics, tax cuts, and two impeachments." },
-      { number: 46, name: "Joe Biden", party: "Democratic", term: "2021–2025", knownFor: "Managed COVID-19 recovery, infrastructure law, and major climate and social spending bills." },
-      { number: 47, name: "Donald Trump", party: "Republican", term: "2025–present", knownFor: "First president since Grover Cleveland to serve nonconsecutive terms." }
+
+    /*
+      STATISTICS FLASHCARDS
+    */
+
+    const statistics = [
+
+      {
+        term: "Population",
+        category: "Basics",
+        question: "What is a Population?",
+        definition: "A total number of people being put up to be studied.",
+        example: "Example: All 100 people currently in a library."
+      },
+
+      {
+        term: "Sample",
+        category: "Basics",
+        question: "What is a Sample?",
+        definition: "A portion of the population being studied.",
+        example: "Example: 20 people selected from the 100 people in a library."
+      },
+
+      {
+        term: "Census",
+        category: "Basics",
+        question: "What is a Census?",
+        definition: "The whole population being studied.",
+        example: "Example: Studying all 100 people in a library."
+      },
+
+      {
+        term: "Parameter",
+        category: "Basics",
+        question: "What is a Parameter?",
+        definition: "A number explaining a population characteristics that cannot be easily determined.",
+        example: "Example: The actual average age of every person in the population."
+      },
+
+      {
+        term: "Statistics",
+        category: "Basics",
+        question: "What are Statistics?",
+        definition: "An estimate chart for the population parameter.",
+        example: "Example: Using a sample average to estimate the population average."
+      },
+
+      {
+        term: "Descriptive Statistics",
+        category: "Statistics",
+        question: "What are Descriptive Statistics?",
+        definition: "Describes the finishing statement of the data collected.",
+        example: "Example: Finding the mean, median, or other summary of collected data."
+      },
+
+      {
+        term: "Inferential Data",
+        category: "Statistics",
+        question: "What is Inferential Data?",
+        definition: "You bring up a small sample of a population.",
+        example: "Example: Surveying 100 customers and using the results to draw a conclusion about the entire customer base."
+      },
+
+      {
+        term: "Numerical Measures",
+        category: "Statistics",
+        question: "What are Numerical Measures?",
+        definition: "Number that summarise the data ( mean medium etc).",
+        example: "Example: Mean, median, and other numbers that summarize data."
+      },
+
+      {
+        term: "Quantitative Model",
+        category: "Statistics",
+        question: "What is a Quantitative Model?",
+        definition: "Using mathematic equation as a model.",
+        example: "Example: Using an equation to model or predict a relationship."
+      },
+
+      {
+        term: "Simple Sample",
+        category: "Sampling",
+        question: "What is a Simple Sample?",
+        definition: "getting a list of all students, using a random number generator, eliminates bias, works well downside is response.",
+        example: "Example: Get a list of all students and use a random number generator to select students."
+      },
+
+      {
+        term: "Stratified Sample",
+        category: "Sampling",
+        question: "What is a Stratified Sample?",
+        definition: "Finding a 100 students; 50 from one area to another; Transfers, recent graduate etc; Different bias from different backgrounds.",
+        example: "Example: Separating students into groups such as transfers and recent graduates before selecting students."
+      },
+
+      {
+        term: "Cluster Sampling",
+        category: "Sampling",
+        question: "What is Cluster Sampling?",
+        definition: "Select students specific standard using ones who use vs not. Then divide into cluster. Random number each cluster. Downside not everyone is represented.",
+        example: "Example: Divide students into clusters and randomly select clusters."
+      },
+
+      {
+        term: "Categorical Variables",
+        category: "Variables",
+        question: "What are Categorical Variables?",
+        definition: "1st grade 2nd grade etc.",
+        example: "Example: Grade levels such as 1st grade and 2nd grade."
+      },
+
+      {
+        term: "Numeric Variable",
+        category: "Variables",
+        question: "What is a Numeric Variable?",
+        definition: "2.5 hours.",
+        example: "Example: The amount of time someone studies, such as 2.5 hours."
+      },
+
+      {
+        term: "Quantitative Data",
+        category: "Data",
+        question: "What is Quantitative Data?",
+        definition: "Countable and measurable data.",
+        example: "Example: 2.5 hours."
+      },
+
+      {
+        term: "Qualitative Data",
+        category: "Data",
+        question: "What is Qualitative Data?",
+        definition: "Category.",
+        example: "Example: A category such as grade level."
+      },
+
+      {
+        term: "Nominal Data",
+        category: "Data Types",
+        question: "What is Nominal Data?",
+        definition: "Arranging sample into categories.",
+        example: "Example: Putting people into categories based on a characteristic."
+      },
+
+      {
+        term: "Ordinal Data",
+        category: "Data Types",
+        question: "What is Ordinal Data?",
+        definition: "Arranging sample into more meaning full and organized categories.",
+        example: "Example: Categories that can be arranged in an organized order."
+      },
+
+      {
+        term: "Interval Data",
+        category: "Data Types",
+        question: "What is Interval Data?",
+        definition: "Has no 0.",
+        example: "Example: A measurement scale where zero does not represent the complete absence of the quantity."
+      },
+
+      {
+        term: "Ratio Data",
+        category: "Data Types",
+        question: "What is Ratio Data?",
+        definition: "Like interval data but has zeros.",
+        example: "Example: A measurement scale where zero represents none of the quantity."
+      },
+
+      {
+        term: "Time Series",
+        category: "Data Types",
+        question: "What is Time Series Data?",
+        definition: "Data collected on the same variable (Daily, Monthly Yearly).",
+        example: "Example: Recording the same variable daily, monthly, or yearly."
+      },
+
+      {
+        term: "Cross Sectional",
+        category: "Data Types",
+        question: "What is Cross Sectional Data?",
+        definition: "Data collected in multiple subjects.",
+        example: "Example: Collecting data from multiple subjects at one point in time."
+      },
+
+      {
+        term: "Variation",
+        category: "Frequency",
+        question: "What is Variation?",
+        definition: "Is the spread of a data (70-90).",
+        example: "Example: Data values ranging from 70 to 90."
+      },
+
+      {
+        term: "Frequency",
+        category: "Frequency",
+        question: "What is Frequency?",
+        definition: "How many things occur.",
+        example: "Example: If a value appears 5 times, its frequency is 5."
+      },
+
+      {
+        term: "Relative Frequency",
+        category: "Frequency",
+        question: "What is Relative Frequency?",
+        definition: "The amount of many things occurred in a category.",
+        example: "Example: The amount of observations that occurred in a category."
+      }
+
     ];
 
-    function getOrdinal(n){
-      const s = ["th","st","nd","rd"],
-            v = n % 100;
-      return n + (s[(v-20)%10] || s[v] || s[0]);
-    }
+
+    /* ELEMENTS */
 
     const card = document.getElementById("card");
-    const qText = document.getElementById("question-text");
-    const ordinalLabel = document.getElementById("ordinal-label");
-    const nameEl = document.getElementById("president-name");
-    const partyEl = document.getElementById("president-party");
-    const termEl = document.getElementById("president-term");
-    const knownEl = document.getElementById("president-known");
-    const counterEl = document.getElementById("counter");
 
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const shuffleBtn = document.getElementById("shuffle-btn");
+    const qText =
+      document.getElementById("question-text");
+
+    const ordinalLabel =
+      document.getElementById("ordinal-label");
+
+    const termName =
+      document.getElementById("term-name");
+
+    const termCategory =
+      document.getElementById("term-category");
+
+    const termDefinition =
+      document.getElementById("term-definition");
+
+    const termExample =
+      document.getElementById("term-example");
+
+    const counterEl =
+      document.getElementById("counter");
+
+    const prevBtn =
+      document.getElementById("prev-btn");
+
+    const nextBtn =
+      document.getElementById("next-btn");
+
+    const shuffleBtn =
+      document.getElementById("shuffle-btn");
+
+
+    /* QUIZ STATE */
 
     let index = 0;
+
     let showingAnswer = false;
 
-    function renderCard(){
-      const p = presidents[index];
-      qText.textContent = "Who was the " + getOrdinal(p.number) + " President of the United States?";
-      ordinalLabel.textContent = "Card " + (index+1) + " of " + presidents.length;
-      nameEl.textContent = p.number + ". " + p.name;
-      partyEl.textContent = p.party;
-      termEl.textContent = "Years in office: " + p.term;
-      knownEl.textContent = p.knownFor;
-      counterEl.textContent = "President " + p.number + " / " + presidents.length;
 
-      // always reset to question side when you move to another card
+    /* RENDER CARD */
+
+    function renderCard(){
+
+      const item = statistics[index];
+
+      qText.textContent =
+        item.question;
+
+      ordinalLabel.textContent =
+        "Card " +
+        (index + 1) +
+        " of " +
+        statistics.length;
+
+      termName.textContent =
+        item.term;
+
+      termCategory.textContent =
+        item.category;
+
+      termDefinition.textContent =
+        item.definition;
+
+      termExample.textContent =
+        item.example;
+
+      counterEl.textContent =
+        "Card " +
+        (index + 1) +
+        " / " +
+        statistics.length;
+
+
+      /* Always return to question side */
+
       showingAnswer = false;
+
       card.classList.remove("show-answer");
+
     }
+
+
+    /* NEXT */
 
     function showNext(){
-      index = (index + 1) % presidents.length;
+
+      index =
+        (index + 1) %
+        statistics.length;
+
       renderCard();
+
     }
+
+
+    /* PREVIOUS */
 
     function showPrev(){
-      index = (index - 1 + presidents.length) % presidents.length;
+
+      index =
+        (index - 1 + statistics.length) %
+        statistics.length;
+
       renderCard();
+
     }
+
+
+    /* SHUFFLE */
 
     function shuffleCard(){
+
       let newIndex = index;
-      while(newIndex === index && presidents.length > 1){
-        newIndex = Math.floor(Math.random() * presidents.length);
+
+      while(
+        newIndex === index &&
+        statistics.length > 1
+      ){
+
+        newIndex =
+          Math.floor(
+            Math.random() *
+            statistics.length
+          );
+
       }
+
       index = newIndex;
+
       renderCard();
+
     }
 
+
+    /* FLIP CARD */
+
     card.addEventListener("click", () => {
-      showingAnswer = !showingAnswer;
+
+      showingAnswer =
+        !showingAnswer;
+
       if(showingAnswer){
-        card.classList.add("show-answer");
+
+        card.classList.add(
+          "show-answer"
+        );
+
       }else{
-        card.classList.remove("show-answer");
+
+        card.classList.remove(
+          "show-answer"
+        );
+
       }
+
     });
 
-    nextBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      showNext();
-    });
 
-    prevBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      showPrev();
-    });
+    /* BUTTONS */
 
-    shuffleBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      shuffleCard();
-    });
+    nextBtn.addEventListener(
+      "click",
+      e => {
 
-    // Start with the first president
+        e.stopPropagation();
+
+        showNext();
+
+      }
+    );
+
+
+    prevBtn.addEventListener(
+      "click",
+      e => {
+
+        e.stopPropagation();
+
+        showPrev();
+
+      }
+    );
+
+
+    shuffleBtn.addEventListener(
+      "click",
+      e => {
+
+        e.stopPropagation();
+
+        shuffleCard();
+
+      }
+    );
+
+
+    /* START QUIZ */
+
     renderCard();
+
   </script>
+
 </body>
 </html>
