@@ -5,7 +5,6 @@
   <title>Statistics Notes Flashcard Quiz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Bubbly cartoon-ish font -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -383,86 +382,84 @@
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <div class="title">Statistics Flashcards</div>
+  <div class="title">Statistics Flashcards</div>
 
-    <div class="heading">
-      Statistics Notes Quiz
-    </div>
+  <div class="heading">
+    Statistics Notes Quiz
+  </div>
 
-    <p class="subtitle">
-      Front: <strong>Question</strong> &mdash;
-      Back: definition and memory trick.
-      Tap / click the big card to reveal the answer 💭
-    </p>
+  <p class="subtitle">
+    Front: <strong>Question</strong> &mdash;
+    Back: definition and memory trick.
+    Tap / click the big card to reveal the answer 💭
+  </p>
 
-    <div class="card-wrapper">
+  <div class="card-wrapper">
 
-      <div class="card" id="card">
+    <div class="card" id="card">
 
-        <div class="card-inner">
+      <div class="card-inner">
 
-          <!-- FRONT -->
-          <div class="card-face card-front">
+        <!-- FRONT -->
+        <div class="card-face card-front">
 
-            <div class="card-content">
+          <div class="card-content">
 
-              <div>
+            <div>
 
-                <div class="badge">
-                  <span class="badge-dot"></span>
-                  Question
-                </div>
-
-                <p class="question-text" id="question-text"></p>
-
-                <p class="flip-hint">
-                  Tap to reveal the answer!
-                </p>
-
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Question
               </div>
 
-              <div>
-                <p class="ordinal" id="ordinal-label"></p>
-              </div>
+              <p class="question-text" id="question-text"></p>
 
+              <p class="flip-hint">
+                Tap to reveal the answer!
+              </p>
+
+            </div>
+
+            <div>
+              <p class="ordinal" id="ordinal-label"></p>
             </div>
 
           </div>
 
+        </div>
 
-          <!-- BACK -->
-          <div class="card-face card-back">
 
-            <div class="card-content">
+        <!-- BACK -->
+        <div class="card-face card-back">
 
-              <div>
+          <div class="card-content">
 
-                <div class="badge">
-                  <span class="badge-dot"></span>
-                  Answer
+            <div>
+
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Answer
+              </div>
+
+              <div class="back-top">
+
+                <div>
+                  <p class="term-main" id="term-name"></p>
                 </div>
 
-                <div class="back-top">
-
-                  <div>
-                    <p class="term-main" id="term-name"></p>
-                  </div>
-
-                  <div class="category-pill" id="term-category"></div>
-
-                </div>
-
-                <p class="definition" id="term-definition"></p>
-
-                <p class="example" id="term-example"></p>
-
-                <p class="foot-note">
-                  Tap again to go back to the question 🔁
-                </p>
+                <div class="category-pill" id="term-category"></div>
 
               </div>
+
+              <p class="definition" id="term-definition"></p>
+
+              <p class="example" id="term-example"></p>
+
+              <p class="foot-note">
+                Tap again to go back to the question 🔁
+              </p>
 
             </div>
 
@@ -474,496 +471,1165 @@
 
     </div>
 
+  </div>
 
-    <!-- CONTROLS -->
-    <div class="controls">
 
-      <div class="left-buttons">
+  <!-- CONTROLS -->
+  <div class="controls">
 
-        <button id="prev-btn">
-          ⬅ Previous
-        </button>
+    <div class="left-buttons">
 
-        <button id="next-btn" class="primary">
-          Next ➜
-        </button>
+      <button id="prev-btn">
+        ⬅ Previous
+      </button>
 
-      </div>
+      <button id="next-btn" class="primary">
+        Next ➜
+      </button>
 
-      <div class="right-buttons">
+    </div>
 
-        <span class="counter" id="counter"></span>
+    <div class="right-buttons">
 
-        <button id="shuffle-btn">
-          🔀 Shuffle
-        </button>
+      <span class="counter" id="counter"></span>
 
-        <span class="mode-label">
-          Mode: <span>Statistics</span>
-        </span>
+      <button id="shuffle-btn">
+        🔀 Shuffle
+      </button>
 
-      </div>
+      <span class="mode-label">
+        Mode: <span>Statistics</span>
+      </span>
 
     </div>
 
   </div>
 
-
-  <script>
-
-    /*
-      STATISTICS FLASHCARDS
-      Corrected AP Statistics definitions
-    */
-
-    const statistics = [
-
-      // =========================
-      // BASICS
-      // =========================
-
-      {
-        term: "Population",
-        category: "Basics",
-        question: "What is a Population?",
-        definition: "The entire group you want to study.",
-        example: "🧠 Think: POPULATION = everyone."
-      },
-
-      {
-        term: "Sample",
-        category: "Basics",
-        question: "What is a Sample?",
-        definition: "A smaller group taken from the population to study.",
-        example: "🧠 Think: SAMPLE = some people."
-      },
-
-      {
-        term: "Census",
-        category: "Basics",
-        question: "What is a Census?",
-        definition: "Collecting data from every member of the population.",
-        example: "🧠 Think: CENSUS = everyone is counted."
-      },
-
-      {
-        term: "Parameter",
-        category: "Basics",
-        question: "What is a Parameter?",
-        definition: "A number that describes a population.",
-        example: "🧠 Think: PARAMETER = population number."
-      },
-
-      {
-        term: "Statistic",
-        category: "Basics",
-        question: "What is a Statistic?",
-        definition: "A number that describes a sample.",
-        example: "🧠 Think: STATISTIC = sample number."
-      },
-
-
-      // =========================
-      // TYPES OF STATISTICS
-      // =========================
-
-      {
-        term: "Descriptive Statistics",
-        category: "Statistics",
-        question: "What are Descriptive Statistics?",
-        definition: "Statistics used to describe and summarize the data you collected.",
-        example: "🧠 Think: DESCRIBE = summarize what you see."
-      },
-
-      {
-        term: "Inferential Statistics",
-        category: "Statistics",
-        question: "What are Inferential Statistics?",
-        definition: "Using a sample to make a conclusion about a larger population.",
-        example: "🧠 Think: INFER = make a conclusion."
-      },
-
-      {
-        term: "Numerical Measure",
-        category: "Statistics",
-        question: "What is a Numerical Measure?",
-        definition: "A number used to summarize data, such as the mean or median.",
-        example: "🧠 Think: NUMBER = summarizes data."
-      },
-
-      {
-        term: "Quantitative Model",
-        category: "Statistics",
-        question: "What is a Quantitative Model?",
-        definition: "A mathematical equation used to represent or predict data.",
-        example: "🧠 Think: MODEL = math that represents reality."
-      },
-
-
-      // =========================
-      // SAMPLING METHODS
-      // =========================
-
-      {
-        term: "Simple Random Sample",
-        category: "Sampling",
-        question: "What is a Simple Random Sample?",
-        definition: "Every member of the population has an equal chance of being selected.",
-        example: "🧠 Think: RANDOM = everyone has an equal chance."
-      },
-
-      {
-        term: "Stratified Sample",
-        category: "Sampling",
-        question: "What is a Stratified Sample?",
-        definition: "Divide the population into groups, then randomly choose people from each group.",
-        example: "🧠 Think: STRATA = split into groups, then sample each group."
-      },
-
-      {
-        term: "Cluster Sample",
-        category: "Sampling",
-        question: "What is a Cluster Sample?",
-        definition: "Divide the population into groups, randomly choose some groups, and survey everyone in those groups.",
-        example: "🧠 Think: CLUSTER = choose whole groups."
-      },
-
-
-      // =========================
-      // VARIABLES
-      // =========================
-
-      {
-        term: "Categorical Variable",
-        category: "Variables",
-        question: "What is a Categorical Variable?",
-        definition: "A variable that places data into groups or categories.",
-        example: "Example: Grade level, eye color, or favorite sport. 🧠 CATEGORY = group."
-      },
-
-      {
-        term: "Numerical Variable",
-        category: "Variables",
-        question: "What is a Numerical Variable?",
-        definition: "A variable that uses numbers to represent a measurable or countable amount.",
-        example: "Example: 2.5 hours, 17 students, or 72 inches. 🧠 NUMBER = amount."
-      },
-
-
-      // =========================
-      // DATA
-      // =========================
-
-      {
-        term: "Quantitative Data",
-        category: "Data",
-        question: "What is Quantitative Data?",
-        definition: "Data that can be counted or measured with numbers.",
-        example: "🧠 Think: QUANTITY = amount."
-      },
-
-      {
-        term: "Qualitative Data",
-        category: "Data",
-        question: "What is Qualitative Data?",
-        definition: "Data that describes qualities or categories rather than numerical amounts.",
-        example: "🧠 Think: QUALITY = description."
-      },
-
-
-      // =========================
-      // LEVELS OF MEASUREMENT
-      // =========================
-
-      {
-        term: "Nominal Data",
-        category: "Data Types",
-        question: "What is Nominal Data?",
-        definition: "Data placed into categories with no particular order.",
-        example: "Example: Eye color or type of car. 🧠 NOMINAL = names."
-      },
-
-      {
-        term: "Ordinal Data",
-        category: "Data Types",
-        question: "What is Ordinal Data?",
-        definition: "Data placed into categories that have a meaningful order.",
-        example: "Example: Small, medium, and large. 🧠 ORDER = ordinal."
-      },
-
-      {
-        term: "Interval Data",
-        category: "Data Types",
-        question: "What is Interval Data?",
-        definition: "Numerical data where differences are meaningful, but there is no true zero.",
-        example: "Example: Temperature in Celsius. 🧠 INTERVAL = equal intervals, no true zero."
-      },
-
-      {
-        term: "Ratio Data",
-        category: "Data Types",
-        question: "What is Ratio Data?",
-        definition: "Numerical data with equal intervals and a true zero.",
-        example: "Example: Height, weight, or age. 🧠 RATIO = interval + true zero."
-      },
-
-
-      // =========================
-      // TYPES OF DATA COLLECTION
-      // =========================
-
-      {
-        term: "Time Series",
-        category: "Data Types",
-        question: "What is Time Series Data?",
-        definition: "Data collected on the same variable over different points in time.",
-        example: "Example: Daily temperature for a month. 🧠 TIME = over time."
-      },
-
-      {
-        term: "Cross-Sectional",
-        category: "Data Types",
-        question: "What is Cross-Sectional Data?",
-        definition: "Data collected from many subjects at one point in time.",
-        example: "Example: Surveying 500 students about their favorite sport. 🧠 CROSS-SECTION = many people at once."
-      },
-
-
-      // =========================
-      // FREQUENCY & VARIATION
-      // =========================
-
-      {
-        term: "Variation",
-        category: "Frequency",
-        question: "What is Variation?",
-        definition: "How much the values in a dataset differ or spread out.",
-        example: "Example: A dataset ranging from 70 to 90 has variation. 🧠 VARIATION = how spread out."
-      },
-
-      {
-        term: "Frequency",
-        category: "Frequency",
-        question: "What is Frequency?",
-        definition: "The number of times something occurs.",
-        example: "Example: If a value appears 5 times, its frequency is 5. 🧠 FREQUENCY = how often."
-      },
-
-      {
-        term: "Relative Frequency",
-        category: "Frequency",
-        question: "What is Relative Frequency?",
-        definition: "The proportion or percentage of times something occurs.",
-        example: "Example: If 20 out of 100 students choose soccer, the relative frequency is 20%. 🧠 RELATIVE FREQUENCY = how often out of the total."
-      }
-
-    ];
-
-
-    /* ELEMENTS */
-
-    const card = document.getElementById("card");
-
-    const qText =
-      document.getElementById("question-text");
-
-    const ordinalLabel =
-      document.getElementById("ordinal-label");
-
-    const termName =
-      document.getElementById("term-name");
-
-    const termCategory =
-      document.getElementById("term-category");
-
-    const termDefinition =
-      document.getElementById("term-definition");
-
-    const termExample =
-      document.getElementById("term-example");
-
-    const counterEl =
-      document.getElementById("counter");
-
-    const prevBtn =
-      document.getElementById("prev-btn");
-
-    const nextBtn =
-      document.getElementById("next-btn");
-
-    const shuffleBtn =
-      document.getElementById("shuffle-btn");
-
-
-    /* QUIZ STATE */
-
-    let index = 0;
-
-    let showingAnswer = false;
-
-
-    /* RENDER CARD */
-
-    function renderCard(){
-
-      const item = statistics[index];
-
-      qText.textContent =
-        item.question;
-
-      ordinalLabel.textContent =
-        "Card " +
-        (index + 1) +
-        " of " +
-        statistics.length;
-
-      termName.textContent =
-        item.term;
-
-      termCategory.textContent =
-        item.category;
-
-      termDefinition.textContent =
-        item.definition;
-
-      termExample.textContent =
-        item.example;
-
-      counterEl.textContent =
-        "Card " +
-        (index + 1) +
-        " / " +
-        statistics.length;
-
-
-      /* Always return to question side */
-
-      showingAnswer = false;
-
-      card.classList.remove("show-answer");
-
-    }
-
-
-    /* NEXT */
-
-    function showNext(){
-
-      index =
-        (index + 1) %
-        statistics.length;
-
-      renderCard();
-
-    }
-
-
-    /* PREVIOUS */
-
-    function showPrev(){
-
-      index =
-        (index - 1 + statistics.length) %
-        statistics.length;
-
-      renderCard();
-
-    }
-
-
-    /* SHUFFLE */
-
-    function shuffleCard(){
-
-      let newIndex = index;
-
-      while(
-        newIndex === index &&
-        statistics.length > 1
-      ){
-
-        newIndex =
-          Math.floor(
-            Math.random() *
-            statistics.length
-          );
-
-      }
-
-      index = newIndex;
-
-      renderCard();
-
-    }
-
-
-    /* FLIP CARD */
-
-    card.addEventListener("click", () => {
-
-      showingAnswer =
-        !showingAnswer;
-
-      if(showingAnswer){
-
-        card.classList.add(
-          "show-answer"
-        );
-
-      }else{
-
-        card.classList.remove(
-          "show-answer"
-        );
-
-      }
-
-    });
-
-
-    /* BUTTONS */
-
-    nextBtn.addEventListener(
-      "click",
-      e => {
-
-        e.stopPropagation();
-
-        showNext();
-
-      }
-    );
-
-
-    prevBtn.addEventListener(
-      "click",
-      e => {
-
-        e.stopPropagation();
-
-        showPrev();
-
-      }
-    );
-
-
-    shuffleBtn.addEventListener(
-      "click",
-      e => {
-
-        e.stopPropagation();
-
-        shuffleCard();
-
-      }
-    );
-
-
-    /* START QUIZ */
-
-    renderCard();
-
-  </script>
+</div>
+
+
+<script>
+
+const statistics = [
+
+/* =====================================================
+   BASICS
+===================================================== */
+
+{
+  term:"Population",
+  category:"Basics",
+  question:"What is a Population?",
+  definition:"The entire group you want to study.",
+  example:"🧠 POPULATION = everyone."
+},
+
+{
+  term:"Sample",
+  category:"Basics",
+  question:"What is a Sample?",
+  definition:"A smaller group taken from the population to study.",
+  example:"🧠 SAMPLE = some people."
+},
+
+{
+  term:"Census",
+  category:"Basics",
+  question:"What is a Census?",
+  definition:"Collecting data from every member of the population.",
+  example:"🧠 CENSUS = everyone is counted."
+},
+
+{
+  term:"Parameter",
+  category:"Basics",
+  question:"What is a Parameter?",
+  definition:"A number that describes a population.",
+  example:"🧠 PARAMETER = population number."
+},
+
+{
+  term:"Statistic",
+  category:"Basics",
+  question:"What is a Statistic?",
+  definition:"A number that describes a sample.",
+  example:"🧠 STATISTIC = sample number."
+},
+
+{
+  term:"Observation",
+  category:"Basics",
+  question:"What is an Observation?",
+  definition:"One individual piece of data collected from a person, object, or subject.",
+  example:"🧠 OBSERVATION = one data value."
+},
+
+{
+  term:"Data Set",
+  category:"Basics",
+  question:"What is a Data Set?",
+  definition:"A collection of values or observations being studied.",
+  example:"🧠 DATA SET = all the data together."
+},
+
+
+/* =====================================================
+   TYPES OF STATISTICS
+===================================================== */
+
+{
+  term:"Descriptive Statistics",
+  category:"Statistics",
+  question:"What are Descriptive Statistics?",
+  definition:"Statistics used to describe and summarize the data you collected.",
+  example:"🧠 DESCRIBE = summarize what you see."
+},
+
+{
+  term:"Inferential Statistics",
+  category:"Statistics",
+  question:"What are Inferential Statistics?",
+  definition:"Using a sample to make a conclusion about a larger population.",
+  example:"🧠 INFER = make a conclusion."
+},
+
+{
+  term:"Numerical Measure",
+  category:"Statistics",
+  question:"What is a Numerical Measure?",
+  definition:"A number used to summarize data, such as the mean or median.",
+  example:"🧠 NUMBER = summarizes data."
+},
+
+{
+  term:"Quantitative Model",
+  category:"Statistics",
+  question:"What is a Quantitative Model?",
+  definition:"A mathematical equation used to represent or predict data.",
+  example:"🧠 MODEL = math that represents reality."
+},
+
+
+/* =====================================================
+   SAMPLING
+===================================================== */
+
+{
+  term:"Simple Random Sample",
+  category:"Sampling",
+  question:"What is a Simple Random Sample?",
+  definition:"Every member of the population has an equal chance of being selected.",
+  example:"🧠 RANDOM = everyone has an equal chance."
+},
+
+{
+  term:"Stratified Sample",
+  category:"Sampling",
+  question:"What is a Stratified Sample?",
+  definition:"Divide the population into groups, then randomly choose people from each group.",
+  example:"🧠 STRATIFIED = some people from every group."
+},
+
+{
+  term:"Cluster Sample",
+  category:"Sampling",
+  question:"What is a Cluster Sample?",
+  definition:"Divide the population into groups, randomly choose some groups, and survey everyone in those groups.",
+  example:"🧠 CLUSTER = choose whole groups."
+},
+
+
+/* =====================================================
+   VARIABLES & DATA
+===================================================== */
+
+{
+  term:"Categorical Variable",
+  category:"Variables",
+  question:"What is a Categorical Variable?",
+  definition:"A variable that places data into groups or categories.",
+  example:"Example: eye color or favorite sport. 🧠 CATEGORY = group."
+},
+
+{
+  term:"Numerical Variable",
+  category:"Variables",
+  question:"What is a Numerical Variable?",
+  definition:"A variable that uses numbers to represent a measurable or countable amount.",
+  example:"Example: 17 students or 72 inches. 🧠 NUMBER = amount."
+},
+
+{
+  term:"Quantitative Data",
+  category:"Data",
+  question:"What is Quantitative Data?",
+  definition:"Data that can be counted or measured with numbers.",
+  example:"🧠 QUANTITY = amount."
+},
+
+{
+  term:"Qualitative Data",
+  category:"Data",
+  question:"What is Qualitative Data?",
+  definition:"Data that describes qualities or categories rather than numerical amounts.",
+  example:"🧠 QUALITY = description."
+},
+
+
+/* =====================================================
+   LEVELS OF MEASUREMENT
+===================================================== */
+
+{
+  term:"Nominal Data",
+  category:"Data Types",
+  question:"What is Nominal Data?",
+  definition:"Data placed into categories with no particular order.",
+  example:"Example: eye color. 🧠 NOMINAL = names."
+},
+
+{
+  term:"Ordinal Data",
+  category:"Data Types",
+  question:"What is Ordinal Data?",
+  definition:"Data placed into categories that have a meaningful order.",
+  example:"Example: small, medium, large. 🧠 ORDER = ordinal."
+},
+
+{
+  term:"Interval Data",
+  category:"Data Types",
+  question:"What is Interval Data?",
+  definition:"Numerical data where differences are meaningful, but there is no true zero.",
+  example:"Example: temperature in Celsius."
+},
+
+{
+  term:"Ratio Data",
+  category:"Data Types",
+  question:"What is Ratio Data?",
+  definition:"Numerical data with equal intervals and a true zero.",
+  example:"Example: height, weight, or age."
+},
+
+
+/* =====================================================
+   DATA COLLECTION
+===================================================== */
+
+{
+  term:"Time Series",
+  category:"Data Collection",
+  question:"What is Time Series Data?",
+  definition:"Data collected on the same variable over different points in time.",
+  example:"Example: daily temperature for a month. 🧠 TIME = over time."
+},
+
+{
+  term:"Cross-Sectional",
+  category:"Data Collection",
+  question:"What is Cross-Sectional Data?",
+  definition:"Data collected from many subjects at one point in time.",
+  example:"🧠 CROSS-SECTION = many people at once."
+},
+
+
+/* =====================================================
+   ORGANIZATION & FREQUENCY
+===================================================== */
+
+{
+  term:"Variation",
+  category:"Organization",
+  question:"What is Variation?",
+  definition:"How much the values in a dataset differ or spread out.",
+  example:"🧠 VARIATION = how spread out."
+},
+
+{
+  term:"Frequency",
+  category:"Organization",
+  question:"What is Frequency?",
+  definition:"The number of times something occurs.",
+  example:"🧠 FREQUENCY = how often."
+},
+
+{
+  term:"Relative Frequency",
+  category:"Organization",
+  question:"What is Relative Frequency?",
+  definition:"The proportion or percentage of times something occurs.",
+  example:"🧠 RELATIVE FREQUENCY = how often out of the total."
+},
+
+{
+  term:"Frequency Table",
+  category:"Organization",
+  question:"What is a Frequency Table?",
+  definition:"A table that lists values or intervals along with how often they occur.",
+  example:"🧠 VALUE + HOW MANY."
+},
+
+{
+  term:"Frequency Distribution",
+  category:"Organization",
+  question:"What is a Frequency Distribution?",
+  definition:"A display showing how often each value or group of values occurs.",
+  example:"🧠 FREQUENCY DISTRIBUTION = data organized by how often."
+},
+
+{
+  term:"Grouped Data",
+  category:"Organization",
+  question:"What is Grouped Data?",
+  definition:"Data organized into intervals instead of showing every individual value.",
+  example:"🧠 GROUPED = put values into ranges."
+},
+
+{
+  term:"Class Interval",
+  category:"Organization",
+  question:"What is a Class Interval?",
+  definition:"A range of values used to group data in a frequency table.",
+  example:"Example: 50–59, 60–69, 70–79. 🧠 CLASS INTERVAL = data range."
+},
+
+{
+  term:"Grouped Frequency Table",
+  category:"Organization",
+  question:"What is a Grouped Frequency Table?",
+  definition:"A table that organizes data into intervals and shows the frequency of each interval.",
+  example:"🧠 GROUPED = ranges + how many."
+},
+
+{
+  term:"Midpoint",
+  category:"Organization",
+  question:"What is a Midpoint?",
+  definition:"The value halfway between the lower and upper boundaries of an interval.",
+  example:"🧠 MIDPOINT = halfway."
+},
+
+{
+  term:"Class Midpoint",
+  category:"Organization",
+  question:"What is a Class Midpoint?",
+  definition:"The value halfway between the boundaries of a class interval.",
+  example:"Formula: (lower boundary + upper boundary) ÷ 2."
+},
+
+{
+  term:"Estimated Mean",
+  category:"Organization",
+  question:"What is an Estimated Mean?",
+  definition:"An approximate mean calculated from grouped data using the midpoint of each interval.",
+  example:"Formula: x̄ ≈ Σfm ÷ Σf."
+},
+
+{
+  term:"Frequency Polygon",
+  category:"Graphs",
+  question:"What is a Frequency Polygon?",
+  definition:"A graph that connects points representing frequencies of data values or intervals.",
+  example:"🧠 POLYGON = connected frequency points."
+},
+
+
+/* =====================================================
+   CENTER
+===================================================== */
+
+{
+  term:"Measure of Center",
+  category:"Center",
+  question:"What is a Measure of Center?",
+  definition:"A number that represents the typical or middle value of a dataset.",
+  example:"Mean, median, and mode are measures of center."
+},
+
+{
+  term:"Mean",
+  category:"Center",
+  question:"What is the Mean?",
+  definition:"Add all the data values together and divide by the number of values.",
+  example:"🧠 MEAN = add ÷ how many."
+},
+
+{
+  term:"Arithmetic Mean",
+  category:"Center",
+  question:"What is the Arithmetic Mean?",
+  definition:"The usual mean found by adding all values and dividing by the number of values.",
+  example:"🧠 ARITHMETIC MEAN = regular average."
+},
+
+{
+  term:"Sample Mean",
+  category:"Center",
+  question:"What is the Sample Mean?",
+  definition:"The mean calculated from a sample.",
+  example:"🧠 x̄ = sample mean."
+},
+
+{
+  term:"Population Mean",
+  category:"Center",
+  question:"What is the Population Mean?",
+  definition:"The mean calculated from an entire population.",
+  example:"🧠 μ = population mean."
+},
+
+{
+  term:"Median",
+  category:"Center",
+  question:"What is the Median?",
+  definition:"The middle value when data is arranged from smallest to largest.",
+  example:"🧠 MEDIAN = middle."
+},
+
+{
+  term:"Median Location",
+  category:"Center",
+  question:"How do you find the location of the Median?",
+  definition:"The position of the median in an ordered dataset.",
+  example:"Formula: (n + 1) ÷ 2. The location tells where the median is, not necessarily its value."
+},
+
+{
+  term:"Mode",
+  category:"Center",
+  question:"What is the Mode?",
+  definition:"The value that occurs most often.",
+  example:"🧠 MODE = most."
+},
+
+{
+  term:"Bimodal",
+  category:"Center",
+  question:"What does Bimodal mean?",
+  definition:"A dataset or distribution with two values tied for the highest frequency.",
+  example:"🧠 BI = TWO."
+},
+
+{
+  term:"Unimodal",
+  category:"Center",
+  question:"What does Unimodal mean?",
+  definition:"A dataset or distribution with one mode.",
+  example:"🧠 UNI = ONE."
+},
+
+{
+  term:"Center Location",
+  category:"Center",
+  question:"What is Center Location?",
+  definition:"A value or position that represents the middle or typical location of a dataset.",
+  example:"🧠 CENTER = where the data is located."
+},
+
+{
+  term:"Extreme Value",
+  category:"Center",
+  question:"What is an Extreme Value?",
+  definition:"A value that is much larger or smaller than most other values.",
+  example:"🧠 EXTREME = unusually far away. It can sometimes be an outlier."
+},
+
+
+/* =====================================================
+   OUTLIERS & RESISTANCE
+===================================================== */
+
+{
+  term:"Outlier",
+  category:"Center & Spread",
+  question:"What is an Outlier?",
+  definition:"A value that is unusually far away from the other values in a dataset.",
+  example:"🧠 OUTLIER = sticks out."
+},
+
+{
+  term:"Resistant",
+  category:"Center & Spread",
+  question:"What does Resistant mean?",
+  definition:"A statistic that is not strongly affected by extreme values or outliers.",
+  example:"🧠 The MEDIAN is resistant to outliers."
+},
+
+
+/* =====================================================
+   SIGMA & NOTATION
+===================================================== */
+
+{
+  term:"Sigma Notation (Σ)",
+  category:"Notation",
+  question:"What does Sigma (Σ) mean?",
+  definition:"A symbol that means to add a specific list of values together.",
+  example:"🧠 Σ = ADD THEM UP."
+},
+
+{
+  term:"xᵢ",
+  category:"Notation",
+  question:"What does xᵢ represent?",
+  definition:"The individual data value at position i.",
+  example:"🧠 x = value, i = which one."
+},
+
+{
+  term:"n",
+  category:"Notation",
+  question:"What does n represent?",
+  definition:"The number of values in a sample.",
+  example:"🧠 n = sample size."
+},
+
+{
+  term:"N",
+  category:"Notation",
+  question:"What does N represent?",
+  definition:"The number of values in a population.",
+  example:"🧠 N = population size."
+},
+
+{
+  term:"Index",
+  category:"Notation",
+  question:"What is an Index?",
+  definition:"A number used to identify the position of a particular observation.",
+  example:"In x₁, x₂, x₃, the numbers identify the observations."
+},
+
+{
+  term:"Mathematical Operator",
+  category:"Notation",
+  question:"What is a Mathematical Operator?",
+  definition:"A mathematical symbol that tells you what operation to perform.",
+  example:"+, ×, and Σ are examples."
+},
+
+
+/* =====================================================
+   GEOMETRIC MEAN
+===================================================== */
+
+{
+  term:"Geometric Mean",
+  category:"Center",
+  question:"What is the Geometric Mean?",
+  definition:"A measure of center found by multiplying values together and taking the appropriate root.",
+  example:"🧠 Arithmetic = ADD. Geometric = MULTIPLY."
+},
+
+{
+  term:"Product",
+  category:"Geometric Mean",
+  question:"What is a Product?",
+  definition:"The result of multiplying values together.",
+  example:"🧠 PRODUCT = answer to multiplication."
+},
+
+{
+  term:"Growth Rate",
+  category:"Geometric Mean",
+  question:"What is Growth Rate?",
+  definition:"The rate at which something increases or decreases over time.",
+  example:"Population, investment, and sales growth."
+},
+
+{
+  term:"Compound Growth",
+  category:"Geometric Mean",
+  question:"What is Compound Growth?",
+  definition:"Growth where each new amount is based on the previous amount, including earlier growth.",
+  example:"🧠 COMPOUND = growth builds on growth."
+},
+
+
+/* =====================================================
+   SHAPE & SKEWNESS
+===================================================== */
+
+{
+  term:"Distribution",
+  category:"Shape",
+  question:"What is a Distribution?",
+  definition:"The way the values in a dataset are arranged and spread out.",
+  example:"🧠 DISTRIBUTION = how the data is spread."
+},
+
+{
+  term:"Shape",
+  category:"Shape",
+  question:"What is the Shape of a Distribution?",
+  definition:"The overall pattern or appearance of a distribution.",
+  example:"Common shapes include symmetric, skewed left, and skewed right."
+},
+
+{
+  term:"Tail",
+  category:"Shape",
+  question:"What is a Tail?",
+  definition:"The thinner, stretched-out part of a distribution extending away from the center.",
+  example:"🧠 TAIL = the long end of the graph."
+},
+
+{
+  term:"Symmetrical Distribution",
+  category:"Shape",
+  question:"What is a Symmetrical Distribution?",
+  definition:"A distribution where the left and right sides have approximately the same shape.",
+  example:"🧠 Both sides look like a mirror."
+},
+
+{
+  term:"Symmetry",
+  category:"Shape",
+  question:"What is Symmetry?",
+  definition:"When the two sides of a distribution have approximately the same shape.",
+  example:"🧠 SYMMETRY = mirror image."
+},
+
+{
+  term:"Asymmetry",
+  category:"Shape",
+  question:"What is Asymmetry?",
+  definition:"When the two sides of a distribution do not have the same shape.",
+  example:"🧠 A-SYMMETRY = NOT a mirror image."
+},
+
+{
+  term:"Skewness",
+  category:"Shape",
+  question:"What is Skewness?",
+  definition:"A measure of how much a distribution is pulled away from being symmetrical.",
+  example:"🧠 SKEW = pulled to one side."
+},
+
+{
+  term:"Skewed Distribution",
+  category:"Shape",
+  question:"What is a Skewed Distribution?",
+  definition:"A distribution that is not symmetric because one side has a longer tail.",
+  example:"🧠 SKEWED = pulled toward one side."
+},
+
+{
+  term:"Skewed Left",
+  category:"Shape",
+  question:"What is a Skewed Left Distribution?",
+  definition:"A distribution with a long tail extending toward the left.",
+  example:"🧠 LEFT = tail points left. Mean < Median."
+},
+
+{
+  term:"Skewed Right",
+  category:"Shape",
+  question:"What is a Skewed Right Distribution?",
+  definition:"A distribution with a long tail extending toward the right.",
+  example:"🧠 RIGHT = tail points right. Mean > Median."
+},
+
+{
+  term:"Positive Skewness",
+  category:"Shape",
+  question:"What is Positive Skewness?",
+  definition:"Skewness greater than zero, usually indicating a distribution with a longer right tail.",
+  example:"🧠 POSITIVE → RIGHT. Mean > Median."
+},
+
+{
+  term:"Negative Skewness",
+  category:"Shape",
+  question:"What is Negative Skewness?",
+  definition:"Skewness less than zero, usually indicating a distribution with a longer left tail.",
+  example:"🧠 NEGATIVE → LEFT. Mean < Median."
+},
+
+{
+  term:"Zero Skewness",
+  category:"Shape",
+  question:"What is Zero Skewness?",
+  definition:"A skewness value of approximately zero, indicating a symmetric distribution.",
+  example:"🧠 ZERO = balanced."
+},
+
+{
+  term:"Nondimensional",
+  category:"Shape",
+  question:"What does Nondimensional mean?",
+  definition:"A measurement that has no units.",
+  example:"🧠 NO UNITS. Skewness is nondimensional."
+},
+
+
+/* =====================================================
+   SPREAD & STANDARD DEVIATION
+===================================================== */
+
+{
+  term:"Spread",
+  category:"Variation",
+  question:"What is Spread?",
+  definition:"How far apart the values in a dataset are.",
+  example:"🧠 SPREAD = how far apart."
+},
+
+{
+  term:"Deviation",
+  category:"Variation",
+  question:"What is Deviation?",
+  definition:"The difference between an individual data value and the mean.",
+  example:"Formula: x − x̄. 🧠 DEVIATION = distance from the mean."
+},
+
+{
+  term:"Deviation from the Mean",
+  category:"Variation",
+  question:"What is Deviation from the Mean?",
+  definition:"The difference between a data value and the mean.",
+  example:"Formula: x − x̄."
+},
+
+{
+  term:"Squared Deviation",
+  category:"Variation",
+  question:"What is a Squared Deviation?",
+  definition:"A deviation from the mean that has been multiplied by itself.",
+  example:"Formula: (x − x̄)². 🧠 Squared = deviation × deviation."
+},
+
+{
+  term:"Variance",
+  category:"Variation",
+  question:"What is Variance?",
+  definition:"The average of the squared deviations from the mean.",
+  example:"🧠 VARIANCE = squared spread."
+},
+
+{
+  term:"Standard Deviation",
+  category:"Variation",
+  question:"What is Standard Deviation?",
+  definition:"A measure of how spread out the data values are from the mean.",
+  example:"🧠 SD = typical distance from the mean."
+},
+
+{
+  term:"Small Standard Deviation",
+  category:"Variation",
+  question:"What does a Small Standard Deviation mean?",
+  definition:"The data values are clustered close to the mean.",
+  example:"🧠 SMALL SD = close together."
+},
+
+{
+  term:"Large Standard Deviation",
+  category:"Variation",
+  question:"What does a Large Standard Deviation mean?",
+  definition:"The data values are more spread out from the mean.",
+  example:"🧠 LARGE SD = spread out."
+},
+
+{
+  term:"Standard Deviation Units",
+  category:"Variation",
+  question:"What units does Standard Deviation use?",
+  definition:"Standard deviation is expressed in the same units as the original data.",
+  example:"If data is measured in inches, SD is measured in inches."
+},
+
+
+/* =====================================================
+   GRAPHS
+===================================================== */
+
+{
+  term:"Statistical Graph",
+  category:"Graphs",
+  question:"What is a Statistical Graph?",
+  definition:"A visual display used to organize and understand data.",
+  example:"🧠 GRAPH = see the data."
+},
+
+{
+  term:"Histogram",
+  category:"Graphs",
+  question:"What is a Histogram?",
+  definition:"A graph that uses connected bars to show the frequency of numerical data grouped into intervals.",
+  example:"🧠 HISTOGRAM = numerical intervals + connected bars."
+},
+
+{
+  term:"Bar Graph",
+  category:"Graphs",
+  question:"What is a Bar Graph?",
+  definition:"A graph that uses separate bars to compare frequencies or amounts across categories.",
+  example:"🧠 BAR GRAPH = compare categories."
+},
+
+{
+  term:"Dot Plot",
+  category:"Graphs",
+  question:"What is a Dot Plot?",
+  definition:"A graph that uses dots above values to show how often each value occurs.",
+  example:"🧠 DOTS = frequency."
+},
+
+{
+  term:"Stem-and-Leaf Plot",
+  category:"Graphs",
+  question:"What is a Stem-and-Leaf Plot?",
+  definition:"A display that organizes numerical data by separating each value into a stem and a leaf.",
+  example:"Example: 2 | 3 5 7 represents 23, 25, 27."
+},
+
+{
+  term:"Line Graph",
+  category:"Graphs",
+  question:"What is a Line Graph?",
+  definition:"A graph that connects data points with lines to show how a variable changes.",
+  example:"🧠 LINE = change or trend."
+},
+
+{
+  term:"Pie Chart",
+  category:"Graphs",
+  question:"What is a Pie Chart?",
+  definition:"A circular graph divided into sections that represent parts of a whole.",
+  example:"🧠 PIE = parts of the whole."
+},
+
+{
+  term:"Box Plot",
+  category:"Graphs",
+  question:"What is a Box Plot?",
+  definition:"A graph that summarizes the distribution of numerical data using a box and lines.",
+  example:"🧠 BOX PLOT = center, spread, and possible outliers."
+},
+
+
+/* =====================================================
+   IMPORTANT RULES
+===================================================== */
+
+{
+  term:"Mean vs. Median with Outliers",
+  category:"Rules",
+  question:"What happens to the Mean and Median when there is an Outlier?",
+  definition:"The mean is affected by outliers, while the median is much less affected.",
+  example:"🧠 OUTLIER → MEAN GETS PULLED → MEDIAN IS USUALLY BETTER."
+},
+
+{
+  term:"Symmetric Rule",
+  category:"Rules",
+  question:"What is the Mean-Median relationship in a symmetric distribution?",
+  definition:"In a perfectly or approximately symmetric distribution, the mean and median are approximately equal.",
+  example:"🧠 SYMMETRIC → Mean ≈ Median."
+},
+
+{
+  term:"Left-Skew Rule",
+  category:"Rules",
+  question:"What is the Mean-Median relationship in a left-skewed distribution?",
+  definition:"The mean is usually less than the median because the mean is pulled toward the left tail.",
+  example:"🧠 LEFT → Mean < Median."
+},
+
+{
+  term:"Right-Skew Rule",
+  category:"Rules",
+  question:"What is the Mean-Median relationship in a right-skewed distribution?",
+  definition:"The mean is usually greater than the median because the mean is pulled toward the right tail.",
+  example:"🧠 RIGHT → Mean > Median."
+},
+
+{
+  term:"Mean and Outliers",
+  category:"Rules",
+  question:"Is the Mean resistant to outliers?",
+  definition:"No. The mean is not resistant to outliers and can be pulled toward extreme values.",
+  example:"🧠 OUTLIER → pulls the MEAN."
+},
+
+{
+  term:"Median and Outliers",
+  category:"Rules",
+  question:"Is the Median resistant to outliers?",
+  definition:"Yes. The median is generally resistant to outliers and is not affected as strongly as the mean.",
+  example:"🧠 MEDIAN → resistant."
+},
+
+{
+  term:"Empirical Rule",
+  category:"Rules",
+  question:"What is the Empirical Rule?",
+  definition:"For a normal or bell-shaped distribution, about 68% of data falls within 1 standard deviation, 95% within 2, and 99.7% within 3.",
+  example:"🧠 REMEMBER: 68% – 95% – 99.7%."
+},
+
+{
+  term:"Chebyshev's Rule",
+  category:"Rules",
+  question:"What is Chebyshev's Rule?",
+  definition:"For any distribution, at least 75% of data is within 2 standard deviations, at least 89% within 3, and at least 95% within 4.5.",
+  example:"🧠 CHEBYSHEV = ANY SHAPE."
+},
+
+{
+  term:"Grouped Data Mean Formula",
+  category:"Formulas",
+  question:"What is the formula for the estimated mean of grouped data?",
+  definition:"The estimated mean is calculated by multiplying each midpoint by its frequency, adding those products, and dividing by total frequency.",
+  example:"Formula: x̄ ≈ Σfm ÷ Σf."
+},
+
+{
+  term:"Sample Mean Formula",
+  category:"Formulas",
+  question:"What is the Sample Mean Formula?",
+  definition:"Add all sample values and divide by the sample size.",
+  example:"Formula: x̄ = Σxᵢ ÷ n."
+},
+
+{
+  term:"Population Mean Formula",
+  category:"Formulas",
+  question:"What is the Population Mean Formula?",
+  definition:"Add all population values and divide by the population size.",
+  example:"Formula: μ = Σxᵢ ÷ N."
+},
+
+{
+  term:"Geometric Mean Formula",
+  category:"Formulas",
+  question:"What is the Geometric Mean Formula?",
+  definition:"Multiply all values together and take the nth root.",
+  example:"Formula: (x₁x₂...xₙ)^(1/n). 🧠 MULTIPLY → ROOT."
+},
+
+{
+  term:"Median Location Formula",
+  category:"Formulas",
+  question:"How do you find the location of the Median?",
+  definition:"The median location is found using the formula (n + 1) ÷ 2.",
+  example:"🧠 LOCATION tells you WHERE the median is."
+}
+
+];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const card = document.getElementById("card");
+
+const qText =
+  document.getElementById("question-text");
+
+const ordinalLabel =
+  document.getElementById("ordinal-label");
+
+const termName =
+  document.getElementById("term-name");
+
+const termCategory =
+  document.getElementById("term-category");
+
+const termDefinition =
+  document.getElementById("term-definition");
+
+const termExample =
+  document.getElementById("term-example");
+
+const counterEl =
+  document.getElementById("counter");
+
+const prevBtn =
+  document.getElementById("prev-btn");
+
+const nextBtn =
+  document.getElementById("next-btn");
+
+const shuffleBtn =
+  document.getElementById("shuffle-btn");
+
+
+/* =====================================================
+   QUIZ STATE
+===================================================== */
+
+let index = 0;
+let showingAnswer = false;
+
+
+/* =====================================================
+   RENDER CARD
+===================================================== */
+
+function renderCard(){
+
+  const item = statistics[index];
+
+  qText.textContent =
+    item.question;
+
+  ordinalLabel.textContent =
+    "Card " +
+    (index + 1) +
+    " of " +
+    statistics.length;
+
+  termName.textContent =
+    item.term;
+
+  termCategory.textContent =
+    item.category;
+
+  termDefinition.textContent =
+    item.definition;
+
+  termExample.textContent =
+    item.example;
+
+  counterEl.textContent =
+    "Card " +
+    (index + 1) +
+    " / " +
+    statistics.length;
+
+  showingAnswer = false;
+
+  card.classList.remove("show-answer");
+}
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function showNext(){
+
+  index =
+    (index + 1) %
+    statistics.length;
+
+  renderCard();
+}
+
+
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
+function showPrev(){
+
+  index =
+    (index - 1 + statistics.length) %
+    statistics.length;
+
+  renderCard();
+}
+
+
+/* =====================================================
+   SHUFFLE
+===================================================== */
+
+function shuffleCard(){
+
+  let newIndex = index;
+
+  while(
+    newIndex === index &&
+    statistics.length > 1
+  ){
+
+    newIndex =
+      Math.floor(
+        Math.random() *
+        statistics.length
+      );
+  }
+
+  index = newIndex;
+
+  renderCard();
+}
+
+
+/* =====================================================
+   FLIP CARD
+===================================================== */
+
+card.addEventListener("click", () => {
+
+  showingAnswer =
+    !showingAnswer;
+
+  if(showingAnswer){
+
+    card.classList.add("show-answer");
+
+  }else{
+
+    card.classList.remove("show-answer");
+
+  }
+
+});
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+nextBtn.addEventListener(
+  "click",
+  e => {
+
+    e.stopPropagation();
+
+    showNext();
+
+  }
+);
+
+
+prevBtn.addEventListener(
+  "click",
+  e => {
+
+    e.stopPropagation();
+
+    showPrev();
+
+  }
+);
+
+
+shuffleBtn.addEventListener(
+  "click",
+  e => {
+
+    e.stopPropagation();
+
+    shuffleCard();
+
+  }
+);
+
+
+/* =====================================================
+   START QUIZ
+===================================================== */
+
+renderCard();
+
+</script>
 
 </body>
 </html>
